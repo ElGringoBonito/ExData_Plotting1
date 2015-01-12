@@ -14,6 +14,6 @@ dds=dd[(as.Date(dd$Date,"%Y-%m-%d")=="2007-02-02" | as.Date(dd$Date,"%Y-%m-%d")=
 dds$Global_active_power=as.numeric(dds$Global_active_power)
 dds$Global_active_power=dds$Global_active_power/500
 
-png('plot1.png')
+png('plot1.png', height=480, width=480)
 hist(dds$Global_active_power,col="red",xlab="Global Active Power (kilowatts)",ylab="Frequency",main="Global Active Power",lab=c(4,7))
 dev.off()
