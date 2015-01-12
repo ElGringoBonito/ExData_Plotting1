@@ -1,4 +1,20 @@
-par(mfrow=2
-mfcol=2
+dataset <- read.table("household_power_consumption.txt",sep=";",header=TRUE,stringsAsFactors=FALSE,na.strings="?")
+names(dataset)=c("Date","Time","Global_active_power","Global_reactive_power","Voltage","Global_intensity","Sub_metering_1","Sub_metering_2","Sub_metering_3")
+dataset=dataset[(dataset$Date=="1/2/2007" | dataset$Date=="2/2/2007"),]
+dataset$DT=as.POSIXct(strptime(paste(dataset$Date," ",dataset$Time,sep=""),"%d/%m/%Y %H:%M:%S"))
 
---> 4 plots
+png('plot4.png', height=480, width=480)
+
+par(mfcol=c(2,2))
+	plot(dataset$Global_active_power~dataset$DT,type="l",col="black",xaxt="n",xlab=" ",ylab="Global Active Power")
+		axis(1,at=c(1170306000,1170392400,1170478800),labels=c("Thu","Fri","Sat"),las=0)
+	plot(dataset$Sub_metering_1~dataset$DT,type="l",col="black",xlab=" ",ylab="Energy sub metering")
+		lines(dataset$Sub_metering_2~dataset$DT,type="l",col="red")
+		lines(dataset$Sub_metering_3~dataset$DT,type="l",col="blue")
+		legend("topright", legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),lty=c(1,1,1),bty="n",col=c("black","red","blue"))
+	plot(dataset$Voltage~dataset$DT,type="l",col="black",xlab="datetime",ylab="Voltage")
+	plot(dataset$Global_reactive_power~dataset$DT,type="l",col="black",xlab="datetime",ylab="Global_reactive_power")
+				axis(2,at=c(.1,.3,.5),labels=c("0.1","0.3","0.5"),las=0)
+
+dev.off()
+
